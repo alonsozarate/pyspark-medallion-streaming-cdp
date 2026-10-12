@@ -12,10 +12,27 @@ This repository demonstrates a production-ready PySpark Structured Streaming pip
 * **Spark Optimization:** Adaptive Query Execution (AQE), Dynamic Partition Pruning, and `OPTIMIZE ZORDER BY` are configured for performance tuning.
 
 
-# PySpark Medallion Streaming Pipeline (Event-Driven Architecture)
+# PySpark Medallion Streaming Pipeline (CDP & PII Compliance)
 
 ## Overview
-Below is an overview of a recent end-to-end production pipeline I architected, coded, and supported. This solution leverages PySpark Structured Streaming and OOP principles to process event-driven data at scale.
+This repository demonstrates a production-ready PySpark Structured Streaming pipeline designed for Customer Data Platforms (CDP). It processes real-time Kafka event streams through a Medallion Architecture (Bronze, Silver, Gold) on Azure Databricks, leveraging Object-Oriented Programming (OOP) principles to ensure scalability, maintainability, and GDPR/PII compliance.
+
+## Project Structure
+The codebase is modularized following OOP best practices to ensure code reusability and clean separation of concerns:
+
+```text
+pyspark-medallion-streaming-cdp/
+├── config/
+│   └── spark_config.py       # SparkSession settings & AQE optimizations
+├── core/
+│   └── base_stage.py         # Abstract Base Class (ABC) for Medallion stages
+├── stages/
+│   ├── bronze_stage.py       # Kafka streaming ingestion (Permissive mode)
+│   ├── silver_stage.py       # Cleansing, deduplication & Quarantine (DLQ)
+│   └── gold_stage.py         # Stateful aggregations, Salting & Delta MERGE
+├── main.py                   # Polymorphic orchestrator entry point
+└── README.md
+```
 
 ## 1. Architecture & Context 
 I implemented a Medallion Architecture (Bronze, Silver, Gold) on Azure Databricks to process real-time telemetry events from Kafka. To ensure maintainability and CI/CD, I designed an object-oriented framework using the `abc` Python module. The core execution logic was abstracted into a `MedallionStageBase` class using a template method pattern, allowing seamless polymorphic execution of each layer.
